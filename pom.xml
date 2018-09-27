@@ -1364,13 +1364,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <scm>
-        <url>https://github.com/wso2/product-ei.git</url>
-        <developerConnection>scm:git:https://github.com/wso2/product-ei.git</developerConnection>
-        <connection>scm:git:https://github.com/wso2/product-ei.git</connection>
-        <tag>v6.4.0-rc1</tag>
-    </scm>
-
     <profiles>
         <profile>
             <id>sign</id>
@@ -1593,7 +1586,6 @@
         <selenium.version>2.40.0</selenium.version>
         <slf4j.version>1.7.21</slf4j.version>
         <activemq.version>5.9.1</activemq.version>
-        <project.scm.id>wso2-scm-server</project.scm.id>
         <rabbitmq.orbit.version>3.6.6.wso2v1</rabbitmq.orbit.version>
         <orbit.fasterxml.jackson.version>2.6.1.wso2v1</orbit.fasterxml.jackson.version>
         <orbit.fasterxml.jackson-databind.version>2.6.1.wso2v3</orbit.fasterxml.jackson-databind.version>
@@ -1785,18 +1777,6 @@
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <configuration>
-                        <preparationGoals>clean install</preparationGoals>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
                 </plugin>
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
