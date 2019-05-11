@@ -54,14 +54,6 @@
                     <groupId>org.apache.cxf</groupId>
                     <artifactId>cxf-rt-frontend-jaxrs</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>com.saucelabs.selenium</groupId>
-                    <artifactId>sauce-ondemand-driver</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.saucelabs.selenium</groupId>
-                    <artifactId>selenium-client-factory</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -81,14 +73,6 @@
                 <exclusion>
                     <groupId>org.seleniumhq.selenium</groupId>
                     <artifactId>selenium-java</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.saucelabs.selenium</groupId>
-                    <artifactId>sauce-ondemand-driver</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.saucelabs.selenium</groupId>
-                    <artifactId>selenium-client-factory</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
