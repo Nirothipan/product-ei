@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://ws.apache.org/ns/synapse"
+     name="JsonPreserveSpacesAPI"
+     context="/preserveSpacesProperty">
+    <resource methods="POST"
+              url-mapping="/preserveSpaces">
+        <inSequence>
+            <log level="custom">
+                <property name="############################### With PRESERVE_SPACES property"
+                          value="Preserve spaces"/>
+            </log>
+            <property name="PRESERVE_SPACES"
+                      value="true"
+                      scope="axis2"/>
+            <property name="messageType"
+                      value="application/json"
+                      scope="axis2"/>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+    </resource>
+    <resource methods="POST"
+              url-mapping="/escapeSpaces">
+        <inSequence>
+            <log level="custom">
+                <property name="############################### Without PRESERVE_SPACES property"
+                          value="Escape spaces"/>
+            </log>
+            <property name="messageType"
+                      value="application/json"
+                      scope="axis2"/>
+            <respond/>
+        </inSequence>
+    </resource>
+</api>
