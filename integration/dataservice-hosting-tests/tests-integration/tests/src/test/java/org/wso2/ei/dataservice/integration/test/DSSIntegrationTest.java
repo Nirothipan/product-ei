@@ -41,6 +41,9 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 public abstract class DSSIntegrationTest {
@@ -51,6 +54,9 @@ public abstract class DSSIntegrationTest {
     protected User userInfo;
     protected String sessionCookie;
     protected TestUserMode userMode;
+
+    static File duplicatesList = new File(
+            "/home/nirothipan/Desktop/IntegrationRepos/dataServices/duplicates.txt");
 
     protected void init() throws Exception {
         userMode =  TestUserMode.SUPER_TENANT_ADMIN;
@@ -103,6 +109,9 @@ public abstract class DSSIntegrationTest {
     protected void deployService(String serviceName, DataHandler dssConfiguration)
             throws Exception {
         DSSTestCaseUtils dssTest = new DSSTestCaseUtils();
+
+        //writeConfigToFile( serviceName , dssConfiguration);
+
         Assert.assertTrue(dssTest.uploadArtifact(dssContext.getContextUrls().getBackEndUrl(), sessionCookie, serviceName,
                                                  dssConfiguration),
                           "Service File Uploading failed");
@@ -110,11 +119,46 @@ public abstract class DSSIntegrationTest {
                           "Service Not Found, Deployment time out ");
     }
 
+    private void writeConfigToFile( String fileName,  DataHandler dssConfiguration) throws  Exception{
+
+        File directory = new File("/home/nirothipan/Desktop/IntegrationRepos/dataServices/" );
+
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
+        File configFile = new File(
+                "/home/nirothipan/Desktop/IntegrationRepos/dataServices/"  + fileName + ".dbs");
+
+        if (configFile.exists()) {
+
+            String duplicateClassName = Thread.currentThread().getStackTrace()[3].getClassName();
+
+
+            duplicatesList.createNewFile();
+            duplicatesList.setWritable(true);
+
+            fileName = fileName + "_duplicate_" + System.currentTimeMillis();
+
+            Files.write(Paths.get(duplicatesList.getPath()),
+                    (duplicateClassName + "        " + fileName + " \n").getBytes(), StandardOpenOption.APPEND);
+
+            configFile = new File(
+                    "/home/nirothipan/Desktop/IntegrationRepos/dataServices/" + fileName + ".dbs");
+        }
+
+        configFile.createNewFile();
+
+        configFile.setWritable(true);
+
+        //java.nio.file.Files.write(Paths.get(configFile.getPath()), dssConfiguration.getInputStream());
+    }
+
     protected void deleteService(String serviceName) throws Exception {
-        DSSTestCaseUtils dssTest = new DSSTestCaseUtils();
+       /* DSSTestCaseUtils dssTest = new DSSTestCaseUtils();
         dssTest.deleteService(dssContext.getContextUrls().getBackEndUrl(), sessionCookie, serviceName);
         Assert.assertTrue(dssTest.isServiceDeleted(dssContext.getContextUrls().getBackEndUrl(), sessionCookie,
-                                                   serviceName), "Service Deletion Failed");
+                                                   serviceName), "Service Deletion Failed");*/
     }
 
     protected DataHandler createArtifact(String path, List<File> sqlFile)
@@ -122,6 +166,14 @@ public abstract class DSSIntegrationTest {
         SqlDataSourceUtil dataSource = new SqlDataSourceUtil(sessionCookie
                 , dssContext.getContextUrls().getBackEndUrl());
         dataSource.createDataSource(sqlFile);
+        return dataSource.createArtifact(path);
+    }
+
+    protected DataHandler createArtifact(String path, List<File> sqlFile , String name)
+            throws Exception {
+        SqlDataSourceUtil dataSource = new SqlDataSourceUtil(sessionCookie
+                , dssContext.getContextUrls().getBackEndUrl());
+        dataSource.createDataSource(sqlFile,name);
         return dataSource.createArtifact(path);
     }
 
