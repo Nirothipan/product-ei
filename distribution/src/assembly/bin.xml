@@ -76,6 +76,7 @@
                 <exclude>**/conf/tomcat/webapp-classloading-environments.xml</exclude>
                 <exclude>**/conf/registry.xml</exclude>
                 <exclude>**/conf/tomcat/web.xml</exclude>
+                <exclude>**/conf/deployment.toml</exclude>
                 <exclude>**/webapp-mode/WEB-INF/web.xml</exclude>
                 <exclude>**/conf/tomcat/carbon/WEB-INF/web.xml</exclude>
                 <exclude>**/wso2/components/plugins/httpclient_4.3.1.wso2v3.jar</exclude>
@@ -118,6 +119,7 @@
                 <exclude>**/webapp-mode/WEB-INF/web.xml</exclude>
                 <exclude>**/tomcat/carbon/WEB-INF/web.xml</exclude>
                 <exclude>**/launch.ini</exclude>
+                <exclude>**/deployment.toml</exclude>
             </excludes>
         </fileSet>
 
@@ -134,6 +136,7 @@
                 <exclude>**/bin/**</exclude>
                 <exclude>**/conf/axis2/axis2.xml</exclude>
                 <exclude>**/conf/axis2/tenant-axis2.xml</exclude>
+                <exclude>**/conf/deployment.toml</exclude>
                 <exclude>**/conf/synapse.xml</exclude>
                 <exclude>**/log4j.properties</exclude>
                 <exclude>**/services/sample01.aar</exclude>
@@ -189,6 +192,8 @@
                 <exclude>**/tomcat/web.xml</exclude>
                 <exclude>**/webapp-mode/WEB-INF/web.xml</exclude>
                 <exclude>**/tomcat/carbon/WEB-INF/web.xml</exclude>
+                <exclude>**/etc/launch.ini</exclude>
+                <exclude>**/deployment.toml</exclude>
             </excludes>
         </fileSet>
 
@@ -206,6 +211,7 @@
                 <exclude>**/conf/axis2/axis2.xml</exclude>
                 <exclude>**/conf/axis2/tenant-axis2.xml</exclude>
                 <exclude>**/conf/synapse.xml</exclude>
+                <exclude>**/conf/deployment.toml</exclude>
                 <exclude>**/log4j.properties</exclude>
                 <exclude>**/services/sample01.aar</exclude>
                 <exclude>**/repository/services/version/**</exclude>
@@ -260,6 +266,8 @@
                 <exclude>**/webapp-mode/WEB-INF/web.xml</exclude>
                 <exclude>**/tomcat/carbon/WEB-INF/web.xml</exclude>
                 <exclude>**/master-datasources.xml</exclude>
+                <exclude>**/etc/launch.ini</exclude>
+                <exclude>**/deployment.toml</exclude>
             </excludes>
         </fileSet>
 
@@ -929,9 +937,9 @@
 
         <fileSet>
             <directory>./src/resources</directory>
-            <outputDirectory>wso2ei-${pom.version}/wso2/lib/endorsed</outputDirectory>
+            <outputDirectory>wso2ei-${pom.version}/lib</outputDirectory>
             <includes>
-                <include>**/saxon9he.jar</include>
+                <include>**/Saxon-HE-9.5.1-8.jar</include>
             </includes>
         </fileSet>
         <!-- added a bps specific endorsed directory. Fix https://wso2.org/jira/browse/ESBJAVA-5118-->
@@ -1491,7 +1499,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>wso2ei-${pom.version}/wso2/lib/endorsed</outputDirectory>
+            <outputDirectory>wso2ei-${pom.version}/wso2/lib</outputDirectory>
             <includes>
                 <include>javax.jms:javax.jms-api:jar</include>
             </includes>
@@ -1721,7 +1729,7 @@
 
         <file>
             <source>
-                ../p2-profile/business-process-profile/target/wso2carbon-core-${carbon.kernel.version}/wso2/database/activiti.h2.db
+                ../p2-profile/business-process-profile/target/wso2carbon-core-${carbon.kernel.version}/wso2/database/activiti.mv.db
             </source>
             <outputDirectory>
                 ${pom.artifactId}-${pom.version}/wso2/business-process/repository/database/
@@ -1730,7 +1738,7 @@
         </file>
         <file>
             <source>
-                ../p2-profile/business-process-profile/target/wso2carbon-core-${carbon.kernel.version}/wso2/database/jpadb.h2.db
+                ../p2-profile/business-process-profile/target/wso2carbon-core-${carbon.kernel.version}/wso2/database/jpadb.mv.db
             </source>
             <outputDirectory>
                 ${pom.artifactId}-${pom.version}/wso2/business-process/repository/database/
@@ -1891,6 +1899,13 @@
             <fileMode>644</fileMode>
         </file>
         <file>
+            <source>src/broker/conf/etc/launch.ini</source>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/wso2/broker/conf/etc/
+            </outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
             <source>src/broker/conf/tomcat/carbon/META-INF/context.xml</source>
             <outputDirectory>
                 ${pom.artifactId}-${pom.version}/wso2/broker/conf/tomcat/carbon/META-INF/
@@ -1943,7 +1958,13 @@
             <destName>axis2_client.xml</destName>
             <fileMode>644</fileMode>
         </file>
-
+        <file>
+            <source>src/business-process/conf/etc/launch.ini</source>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/wso2/business-process/conf/etc/
+            </outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
         <file>
             <source>src/business-process/conf/axis2/tenant-axis2.xml</source>
             <outputDirectory>wso2ei-${pom.version}/wso2/broker/conf/axis2/</outputDirectory>
@@ -2095,7 +2116,7 @@
         </file>
         <file>
             <source>
-                ../p2-profile/broker-profile/target/wso2carbon-core-${carbon.kernel.version}/wso2/database/WSO2MB_DB.h2.db
+                ../p2-profile/broker-profile/target/wso2carbon-core-${carbon.kernel.version}/wso2/database/WSO2MB_DB.mv.db
             </source>
             <outputDirectory>wso2ei-${pom.version}/wso2/broker/repository/database/
             </outputDirectory>
@@ -2483,118 +2504,118 @@
 
 
         <!-- START Analytics file copying -->
-            <file>
-                <source>../p2-profile/analytics-profile/target/wso2sp-${project.version}/bin/kernel-version.txt</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/bin/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>444</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/target/wso2sp-${project.version}/bin/README.txt</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/bin/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>444</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/bin/version.txt</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/bin/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>644</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/deployment/stream-definitions.yaml</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/deployment/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>644</fileMode>
-            </file>
-            <!--TODO: Workaround for issue trustStore and keystore certificate system properties
-            fixed-->
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/runtime/dashboard/carbon.sh</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/dashboard/bin/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>755</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/runtime/dashboard/carbon.bat</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/dashboard/bin/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>755</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/runtime/worker/carbon.sh</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/worker/bin/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>755</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/runtime/worker/carbon.bat</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/worker/bin/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>755</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/runtime/manager/carbon.sh</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/manager/bin/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>755</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/runtime/manager/carbon.bat</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/manager/bin/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>755</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/conf/dashboard/log4j2.xml</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/conf/dashboard/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>644</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/conf/manager/log4j2.xml</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/conf/manager/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>644</fileMode>
-            </file>
-            <file>
-                <source>../p2-profile/analytics-profile/carbon-home/conf/worker/log4j2.xml</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/conf/worker/</outputDirectory>
-                <filtered>true</filtered>
-                <fileMode>644</fileMode>
-            </file>
+        <file>
+            <source>../p2-profile/analytics-profile/target/wso2sp-${project.version}/bin/kernel-version.txt</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>444</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/target/wso2sp-${project.version}/bin/README.txt</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>444</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/bin/version.txt</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/deployment/stream-definitions.yaml</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/deployment/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <!--TODO: Workaround for issue trustStore and keystore certificate system properties
+        fixed-->
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/runtime/dashboard/carbon.sh</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/dashboard/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/runtime/dashboard/carbon.bat</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/dashboard/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/runtime/worker/carbon.sh</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/worker/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/runtime/worker/carbon.bat</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/worker/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/runtime/manager/carbon.sh</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/manager/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/runtime/manager/carbon.bat</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/manager/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/conf/dashboard/log4j2.xml</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/conf/dashboard/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/conf/manager/log4j2.xml</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/conf/manager/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile/analytics-profile/carbon-home/conf/worker/log4j2.xml</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/conf/worker/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
 
-            <!--Forget me tool-->
-            <file>
-                <source>../p2-profile/analytics-profile/src/scripts/forgetme.sh</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/bin/</outputDirectory>
-                <fileMode>744</fileMode>
-            </file>
+        <!--Forget me tool-->
+        <file>
+            <source>../p2-profile/analytics-profile/src/scripts/forgetme.sh</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/bin/</outputDirectory>
+            <fileMode>744</fileMode>
+        </file>
 
-            <file>
-                <source>../p2-profile/analytics-profile/src/scripts/forgetme.bat</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/bin/</outputDirectory>
-                <fileMode>744</fileMode>
-            </file>
+        <file>
+            <source>../p2-profile/analytics-profile/src/scripts/forgetme.bat</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/bin/</outputDirectory>
+            <fileMode>744</fileMode>
+        </file>
 
-            <file>
-                <source>../p2-profile/analytics-profile/target/forget-me/identity-anonymization-tool-${forgetme.tool.version}/bin/forgetme.sh</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/tools/identity-anonymization-tool/bin/</outputDirectory>
-                <fileMode>744</fileMode>
-            </file>
+        <file>
+            <source>../p2-profile/analytics-profile/target/forget-me/identity-anonymization-tool-${forgetme.tool.version}/bin/forgetme.sh</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/tools/identity-anonymization-tool/bin/</outputDirectory>
+            <fileMode>744</fileMode>
+        </file>
 
-            <file>
-                <source>../p2-profile/analytics-profile/target/forget-me/identity-anonymization-tool-${forgetme.tool.version}/bin/forgetme.bat</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/tools/identity-anonymization-tool/bin/</outputDirectory>
-                <fileMode>744</fileMode>
-            </file>
+        <file>
+            <source>../p2-profile/analytics-profile/target/forget-me/identity-anonymization-tool-${forgetme.tool.version}/bin/forgetme.bat</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/tools/identity-anonymization-tool/bin/</outputDirectory>
+            <fileMode>744</fileMode>
+        </file>
 
-            <file>
-                <source>../p2-profile/analytics-profile/target/forget-me/identity-anonymization-tool-${forgetme.tool.version}/conf/product-config/config-sp.json</source>
-                <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/tools/identity-anonymization-tool/conf/</outputDirectory>
-                <destName>config.json</destName>
-                <fileMode>644</fileMode>
-            </file>
+        <file>
+            <source>../p2-profile/analytics-profile/target/forget-me/identity-anonymization-tool-${forgetme.tool.version}/conf/product-config/config-sp.json</source>
+            <outputDirectory>wso2ei-${pom.version}/wso2/analytics/wso2/tools/identity-anonymization-tool/conf/</outputDirectory>
+            <destName>config.json</destName>
+            <fileMode>644</fileMode>
+        </file>
 
         <!--END Analytics file copying -->
 

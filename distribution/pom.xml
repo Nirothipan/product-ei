@@ -100,6 +100,73 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.2</version>
+                <executions>
+                    <!-- Replace Datasource, Scope mpl classes and OAuth callback class in identity.xml -->
+                    <execution>
+                        <id>replace-for-ei-identity</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <file>
+                                ${basedir}/../p2-profile/ei-profile/target/wso2carbon-core-${carbon.kernel.version}/wso2/conf/identity/identity.xml
+                            </file>
+                            <replacements>
+                                <replacement>
+                                    <xpath>/Server/JDBCPersistenceManager/DataSource/Name</xpath>
+                                    <token>(jdbc/WSO2IdentityDB)</token>
+                                    <value>jdbc/WSO2CarbonDB</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <!-- Replace Datasource, Scope mpl classes and OAuth callback class in identity.xml -->
+                    <execution>
+                        <id>replace-for-bps-identity</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <file>
+                                ${basedir}/../p2-profile/business-process-profile/target/wso2carbon-core-${carbon.kernel.version}/wso2/conf/identity/identity.xml
+                            </file>
+                            <replacements>
+                                <replacement>
+                                    <xpath>/Server/JDBCPersistenceManager/DataSource/Name</xpath>
+                                    <token>(jdbc/WSO2IdentityDB)</token>
+                                    <value>jdbc/WSO2CarbonDB</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <!-- Replace Datasource, Scope mpl classes and OAuth callback class in identity.xml -->
+                    <execution>
+                        <id>replace-for-broker-identity</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <file>
+                                ${basedir}/../p2-profile/broker-profile/target/wso2carbon-core-${carbon.kernel.version}/wso2/conf/identity/identity.xml
+                            </file>
+                            <replacements>
+                                <replacement>
+                                    <xpath>/Server/JDBCPersistenceManager/DataSource/Name</xpath>
+                                    <token>(jdbc/WSO2IdentityDB)</token>
+                                    <value>jdbc/WSO2CarbonDB</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.4</version>
@@ -257,9 +324,11 @@
                                 <zip destfile="target/wso2carbon-core-${carbon.kernel.version}/wso2/components/plugins/org.wso2.carbon.security.mgt.ui_${carbon.identity.framework.version}.jar" basedir="${tempdir2}" />
 
                                 <!--Move solr registry -->
-                                <unzip src="target/wso2carbon-core-${carbon.kernel.version}/wso2/components/plugins/org.wso2.carbon.registry.indexing_${carbon.registry.version}.jar" dest="${tempdir2}" />
+                                <unzip
+                                        src="target/wso2carbon-core-${carbon.kernel.version}/wso2/components/plugins/org.wso2.carbon.registry.indexing_4.7.2.jar" dest="${tempdir2}" />
                                 <replace file="${tempdir2}/core.properties" token="dataDir=../../../../solr/data" value="dataDir=../../../solr/data" />
-                                <zip destfile="target/wso2carbon-core-${carbon.kernel.version}/wso2/components/plugins/org.wso2.carbon.registry.indexing_${carbon.registry.version}.jar" basedir="${tempdir2}" />
+                                <zip
+                                        destfile="target/wso2carbon-core-${carbon.kernel.version}/wso2/components/plugins/org.wso2.carbon.registry.indexing_4.7.2.jar" basedir="${tempdir2}" />
 
 
                                 <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/security/Owasp.CsrfGuard.Carbon.properties" token="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*" value="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*${line.separator}org.owasp.csrfguard.unprotected.Sequences=%servletContext%/carbon/sequences/*${line.separator}org.owasp.csrfguard.unprotected.Configadmin=%servletContext%/carbon/configadmin/*${line.separator}org.owasp.csrfguard.unprotected.Localentries=%servletContext%/carbon/localentries/*${line.separator}org.owasp.csrfguard.unprotected.Api=%servletContext%/carbon/api/*${line.separator}org.owasp.csrfguard.unprotected.Proxyservices=%servletContext%/carbon/proxyservices/*${line.separator}org.owasp.csrfguard.unprotected.Resources=%servletContext%/carbon/resources/*${line.separator}org.owasp.csrfguard.unprotected.Task=%servletContext%/carbon/task/*${line.separator}org.owasp.csrfguard.unprotected.RegistryResource=%servletContext%/registry/resource/*${line.separator}org.owasp.csrfguard.unprotected.TenantServices=^%servletContext%/t/.*/services/.*$${line.separator}org.owasp.csrfguard.unprotected.TenantProxyServices=^%servletContext%/t/.*/carbon/proxyservices/.*$${line.separator}org.owasp.csrfguard.unprotected.Saml2SSO=%servletContext%/acs" />

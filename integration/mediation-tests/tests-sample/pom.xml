@@ -15,7 +15,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.12.4</version>
+                <version>${maven.surefire.plugin.version}</version>
                 <inherited>false</inherited>
                 <configuration>
                     <argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=128m</argLine>
@@ -270,8 +270,8 @@
             <artifactId>service-samples</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.h2database.wso2</groupId>
-            <artifactId>h2-database-engine</artifactId>
+            <groupId>org.wso2.orbit.com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.ibatis</groupId>
