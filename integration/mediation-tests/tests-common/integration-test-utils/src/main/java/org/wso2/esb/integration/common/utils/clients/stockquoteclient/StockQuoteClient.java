@@ -33,6 +33,7 @@ import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.esb.integration.common.utils.ESBTestConstant;
 import org.wso2.esb.integration.common.utils.clients.axis2client.ConfigurationContextProvider;
 
 import java.util.ArrayList;
@@ -369,7 +370,11 @@ public class StockQuoteClient {
         return method;
     }
 
-    private static OMElement buildResponse(OMElement omElement) {
+    private static OMElement buildResponse(OMElement omElement) throws AxisFault {
+
+        if (omElement == null) {
+            throw new AxisFault(ESBTestConstant.INCOMING_MESSAGE_IS_NULL);
+        }
         omElement.build();
         return omElement;
     }
