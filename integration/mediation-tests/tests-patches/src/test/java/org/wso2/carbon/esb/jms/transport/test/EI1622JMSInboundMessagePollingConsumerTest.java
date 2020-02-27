@@ -60,7 +60,7 @@ public class EI1622JMSInboundMessagePollingConsumerTest extends ESBIntegrationTe
         pushMessageToQue(addEndpoint());
 
         assertTrue(Utils.checkForLog(logViewerClient, "Suspending polling as the pollingSuspensionLimit of 2 "
-                        + "reached. Polling will be re-started after 3000 milliseconds", 10),
+                        + "reached. Polling will be re-started after 3000 milliseconds", 30),
                 "JMS Polling suspension is not enabled.");
         deleteInboundEndpointFromName(ENDPOINT_NAME);
     }
@@ -71,7 +71,7 @@ public class EI1622JMSInboundMessagePollingConsumerTest extends ESBIntegrationTe
 
         pushMessageToQue(addEndpointWithSuspensionLimitZero());
 
-        assertTrue(Utils.checkForLog(logViewerClient, "Polling is suspended permanently", 10),
+        assertTrue(Utils.checkForLog(logViewerClient, "Polling is suspended permanently", 30),
                 "JMS Polling is not permanently suspended though the suspension limit is 0.");
         deleteInboundEndpointFromName(ENDPOINT_NAME);
     }
