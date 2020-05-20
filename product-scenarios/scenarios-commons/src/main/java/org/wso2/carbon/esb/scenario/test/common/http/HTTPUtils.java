@@ -163,6 +163,39 @@ public class HTTPUtils {
     }
 
     /**
+     * Invoke SOAP Action and Assert
+     *
+     * @param serviceUrl proxy service url
+     * @param request the request to transform
+     * @param messageId messageId to be set as headers
+     * @param expectedResponse expected response from the after transformation
+     * @param statusCode expected status code
+     * @param soapAction SOAP Action
+     * @param testcaseName testcase name to be logged during a test failure
+     * @param connectionTimeout Connection timeout for the SOAP Client
+     * @param socketTimeout Socket timeout for the SOAP Client
+     * @throws IOException
+     */
+    public static void invokeSoapActionAndAssert(String serviceUrl, String request, String messageId,
+                                                 String expectedResponse, int statusCode, String soapAction,
+                                                 String testcaseName, int connectionTimeout, int socketTimeout)
+            throws IOException, XMLStreamException {
+
+        SOAPClient soapClient = new SOAPClient(connectionTimeout, socketTimeout);
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put(ScenarioConstants.MESSAGE_ID, messageId);
+
+        HttpResponse httpResponse = soapClient.sendSimpleSOAPMessage(serviceUrl, request, soapAction, headers);
+        Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), statusCode, testcaseName + " failed");
+        OMElement actualOMResponse = HTTPUtils.getOMFromResponse(httpResponse);
+        OMElement expectedOMResponse = XMLUtils.StringASOM(expectedResponse);
+        Assert.assertNotNull(actualOMResponse, "Invalid response");
+        boolean compareResponse = XMLUtils.compareOMElements(expectedOMResponse, actualOMResponse);
+        Assert.assertTrue(compareResponse, "Expected : <" + expectedResponse + "> but was <" + actualOMResponse
+                + "> in test case : " + messageId);
+    }
+
+    /**
      * Invoke SOAP Action and Assert for String contains
      *
      * @param serviceUrl proxy service url
@@ -239,6 +272,50 @@ public class HTTPUtils {
         boolean compareResponse = XMLUtils.compareOMElements(expectedOMResponse, actualOMResponse);
         Assert.assertTrue(compareResponse,"Expected : <" + expectedResponse + "> but was <" + actualOMResponse
                                           + "> in test case : " + messageId);
+    }
+
+    /**
+     * Invoke a pox action and assert
+     *
+     * @param serviceUrl proxy service url
+     * @param request the request to transform
+     * @param contentType content-type of the request
+     * @param messageId message id to be sent a header
+     * @param expectedResponse expected response after transformation
+     * @param nextExpectedResponse next expected response after transformation
+     * @param statusCode expected status code
+     * @param testcaseName testcase name to be logged during a test failure
+     * @throws IOException
+     * @throws XMLStreamException
+     */
+    public static void invokePoxEndpointAndAssertTwoPayloads(String serviceUrl, String request, String contentType,
+                                                             String messageId,
+                                                             String expectedResponse, String nextExpectedResponse,
+                                                             int statusCode, String testcaseName)
+            throws IOException, XMLStreamException {
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put(ScenarioConstants.MESSAGE_ID, messageId);
+
+        RESTClient restClient = new RESTClient();
+        HttpResponse httpResponse = restClient.doPost(serviceUrl, headers, request, contentType);
+
+        Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), statusCode, testcaseName + " failed");
+
+        OMElement actualOMResponse = HTTPUtils.getOMFromResponse(httpResponse);
+        OMElement expectedOMResponse = XMLUtils.StringASOM(expectedResponse);
+        boolean compareNextResponse = false;
+        boolean compareResponse = XMLUtils.compareOMElements(expectedOMResponse, actualOMResponse);
+        if (!compareResponse) {
+            OMElement nextExpectedOMResponse = XMLUtils.StringASOM(nextExpectedResponse);
+            compareNextResponse = XMLUtils.compareOMElements(nextExpectedOMResponse, actualOMResponse);
+        }
+
+        Assert.assertNotNull(actualOMResponse, "Invalid response");
+
+        Assert.assertTrue(compareResponse || compareNextResponse,
+                "Expected : <" + expectedResponse + "> or Expected : <" + nextExpectedResponse + ">  but was <"
+                        + actualOMResponse + "> in test case : " + messageId);
     }
 
     /**
