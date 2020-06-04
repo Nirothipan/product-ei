@@ -95,10 +95,14 @@ public class ESBJAVA4279_MPRetryUponResponseSC_500_withNonRetryStatusCodes_200_a
     public void testRetryMessageEnvelope() throws Exception {
 
         String messageAtBackEnd = "message at 500 backend = " + CLIENT_REQUEST;
-        int retiredWithResponseMsg;
+        int retiredWithResponseMsg = 0;
         LogEvent[] logs = logViewerClient.getAllRemoteSystemLogs();
-        retiredWithResponseMsg = (int) Arrays.stream(logs).map(LogEvent::getMessage).filter(
-                message -> message.contains(messageAtBackEnd)).count();
+        for (LogEvent logEvent : logs) {
+            String message = logEvent.getMessage();
+            if (message.contains(messageAtBackEnd)) {
+                retiredWithResponseMsg++;
+            }
+        }
         Assert.assertEquals(RETRY_COUNT, retiredWithResponseMsg,
                             "Message processor didn't retry with original message envelope.");
     }
